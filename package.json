@@ -1,0 +1,55 @@
+{
+  "name": "@caviar/cli",
+  "version": "1.0.0",
+  "description": "Caviar cli tool",
+  "bin": {
+    "caviar": "bin/cli"
+  },
+  "main": "src/index.js",
+  "scripts": {
+    "test": "NODE_DEBUG=@caviar/cli nyc ava --timeout=10s --verbose",
+    "test:dev": "NODE_DEBUG=@caviar/cli nyc ava --timeout=10s --verbose && npm run report:dev",
+    "lint": "eslint .",
+    "fix": "eslint . --fix",
+    "posttest": "npm run report",
+    "report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "report:dev": "nyc report --reporter=html && npm run report:open",
+    "report:open": "open coverage/index.html"
+  },
+  "files": [
+    "src/"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/caviarjs/caviar-cli.git"
+  },
+  "keywords": [
+    "@caviar/cli"
+  ],
+  "engines": {
+    "node": ">= 6"
+  },
+  "ava": {
+    "babel": false,
+    "files": [
+      "test/*.test.js"
+    ]
+  },
+  "author": "caviarjs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caviarjs/caviar-cli/issues"
+  },
+  "devDependencies": {
+    "@ostai/eslint-config": "^3.1.0",
+    "ava": "^1.4.1",
+    "codecov": "^3.4.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-import": "^2.17.2",
+    "nyc": "^14.1.1"
+  },
+  "dependencies": {
+    "bin-tool": "^2.0.0",
+    "err-object": "^5.1.4"
+  }
+}
