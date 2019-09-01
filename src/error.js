@@ -14,6 +14,18 @@ E('LOCAL_MODULE_NOT_FOUND', m('locally'))
 
 E('GLOBAL_MODULE_NOT_FOUND', m('globally', '-g '))
 
+E('DEFAULT_CONFIG_NOT_FOUND',
+  `default caviar.config not found, or you should:
+  - specify --caviar.config or put a caviar.config.js in "%s"
+  - or specify at least one of --preset and --configFile`)
+
+E('ERR_LOAD_CAVIAR_CONFIG',
+  'fails to load caviar.config "%s", reason:\n%s')
+
+E('NO_MULTI', 'if --profile is specified, then a "multi" field should be provided in caviar.config "%s"')
+
+E('PROFILE_NOT_FOUND', 'profile "%s" is not found in the "multi" field of caviar.config "%s"')
+
 module.exports = {
   error
 }

@@ -1,7 +1,10 @@
 const {Command} = require('bin-tool')
 
-const {createOptions} = require('./options')
-const WorkingMode = require('./working-mode')
+const {
+  createOptions,
+  optionGroups
+} = require('./options')
+const {WorkingMode} = require('./working-mode')
 
 module.exports = class CaviarCommand extends Command {
   constructor ({
@@ -12,6 +15,8 @@ module.exports = class CaviarCommand extends Command {
     this.options = createOptions({
       defaultCaviarConfig
     })
+
+    this.optionGroups = optionGroups
   }
 
   async run ({
@@ -52,11 +57,22 @@ module.exports = class CaviarCommand extends Command {
     if (sandbox) {
       const subprocess = ret
 
-      await subprocess.ready()
       monitor(subprocess).catch(err => {
         console.error(err.stack)
         process.exit(1)
       })
+
+      await subprocess.ready()
     }
+  }
+
+  showVersion () {
+    console.log(`cli version: ${require('../package.json').version}`)
+
+    const {
+      version
+    } = new WorkingMode(process.cwd()).caviar
+
+    console.log(`client version: ${version}`)
   }
 }

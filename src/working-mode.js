@@ -26,8 +26,8 @@ class WorkingMode {
     } catch (err) {
       if (err.code === 'MODULE_NOT_FOUND') {
         const e = this._isLocal
-          ? error('LOCAL_MODULE_NOT_FOUND', id)
-          : error('GLOBAL_MODULE_NOT_FOUND', id)
+          ? error('LOCAL_MODULE_NOT_FOUND', id, id)
+          : error('GLOBAL_MODULE_NOT_FOUND', id, id)
 
         throw e
       }

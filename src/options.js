@@ -53,13 +53,13 @@ const DEFAULT_OPTIONS = {
     }
   },
 
-  ...MAIN_OPTIONS,
-
   phase: {
     default: 'default',
-    description: 'the caviar phase to run',
+    description: 'the caviar phase to run, defaults to "default"',
     type: 'string'
   },
+
+  ...MAIN_OPTIONS,
 
   profile: {
     optional: true,
@@ -67,13 +67,6 @@ const DEFAULT_OPTIONS = {
     type: 'string',
     default () {
       return this.rawParent._[0] || ''
-    },
-    set (profile) {
-      if (profile && isMainDefined(this.parent)) {
-        throw error('OPTION_CONFLICT')
-      }
-
-      return profile
     }
   },
 }
@@ -83,11 +76,28 @@ const createOptions = ({
 } = {}) => ({
   ...DEFAULT_OPTIONS,
   [CAVIAR_CONFIG]: {
+    description: 'specify the cli configuration file to use',
     default () {
-      return defaultCaviarConfig || join(this.parent.cwd, 'caviar.config.js')
+      if (defaultCaviarConfig) {
+        return defaultCaviarConfig
+      }
+
+      // We also support caviar.config directory
+      const path = join(this.parent.cwd, 'caviar.config')
+
+      try {
+        return require.resolve(path)
+      } catch (err) {
+        // do nothing
+      }
     },
     set (path) {
-      if (isMainDefined(this.parent)) {
+      // If no caviar.config found, then skip
+      if (!path) {
+        if (!isMainDefined(this.parent)) {
+          throw error('DEFAULT_CONFIG_NOT_FOUND', this.parent.cwd)
+        }
+
         return
       }
 
@@ -112,7 +122,7 @@ const createOptions = ({
         caviarConfig = caviarConfig.multi[profile]
 
         if (!caviarConfig) {
-          throw error('DIRECTIVE_NOT_FOUND', profile, path)
+          throw error('PROFILE_NOT_FOUND', profile, path)
         }
       }
 
@@ -127,6 +137,24 @@ const createOptions = ({
   }
 })
 
+// const usage = `caviar [options]`
+
+const optionGroups = [
+  {
+    title: 'Main Options:',
+    options: MAIN_PROPERTIES
+  },
+
+  {
+    title: 'Profile Options:',
+    options: [
+      'profile',
+      'caviar.config'
+    ]
+  }
+]
+
 module.exports = {
-  createOptions
+  createOptions,
+  optionGroups
 }

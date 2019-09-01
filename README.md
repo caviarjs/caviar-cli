@@ -38,6 +38,12 @@ module.exports = {
 > caviar
 ```
 
+For details,
+
+```sh
+> caviar --help
+```
+
 ## License
 
 [MIT](LICENSE)
