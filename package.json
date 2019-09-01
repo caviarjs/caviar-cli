@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Caviar cli tool",
   "bin": {
-    "caviar": "bin/caviar"
+    "caviar": "bin/caviar.js"
   },
   "main": "src/command.js",
   "scripts": {
