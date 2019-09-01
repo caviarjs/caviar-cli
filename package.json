@@ -50,6 +50,8 @@
   },
   "dependencies": {
     "bin-tool": "^2.0.0",
-    "err-object": "^5.1.4"
+    "err-object": "^5.1.4",
+    "is-path-inside": "^3.0.1",
+    "resolve-from": "^5.0.0"
   }
 }
