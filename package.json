@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Caviar cli tool",
   "bin": {
-    "caviar": "bin/cli"
+    "caviar": "bin/caviar"
   },
-  "main": "src/index.js",
+  "main": "src/command.js",
   "scripts": {
     "test": "NODE_DEBUG=@caviar/cli nyc ava --timeout=10s --verbose",
     "test:dev": "NODE_DEBUG=@caviar/cli nyc ava --timeout=10s --verbose && npm run report:dev",
@@ -41,15 +41,15 @@
     "url": "https://github.com/caviarjs/caviar-cli/issues"
   },
   "devDependencies": {
-    "@ostai/eslint-config": "^3.1.0",
-    "ava": "^1.4.1",
-    "codecov": "^3.4.0",
-    "eslint": "^5.16.0",
-    "eslint-plugin-import": "^2.17.2",
+    "@ostai/eslint-config": "^3.5.0",
+    "ava": "^2.3.0",
+    "codecov": "^3.5.0",
+    "eslint": "^6.3.0",
+    "eslint-plugin-import": "^2.18.2",
     "nyc": "^14.1.1"
   },
   "dependencies": {
-    "bin-tool": "^2.0.0",
+    "bin-tool": "^2.0.1",
     "err-object": "^5.1.4",
     "is-path-inside": "^3.0.1",
     "resolve-from": "^5.0.0"
