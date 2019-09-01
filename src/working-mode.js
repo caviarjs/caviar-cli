@@ -5,8 +5,11 @@
 const {join} = require('path')
 const isPathInside = require('is-path-inside')
 const resolveFrom = require('resolve-from')
+const semver = require('semver')
 
 const {error} = require('./error')
+
+const MIN_CAVIAR_VERSION = '5.0.0'
 
 class WorkingMode {
   constructor (cwd) {
@@ -14,6 +17,12 @@ class WorkingMode {
     this._isLocal = isPathInside(__dirname, join(cwd, 'node_modules'))
 
     this._caviar = require(this.resolve('caviar'))
+
+    const {version} = this._caviar
+
+    if (semver.lt(version, MIN_CAVIAR_VERSION)) {
+      throw error('INCOMPATIBLE_CAVIAR_VERSION', version)
+    }
   }
 
   get caviar () {

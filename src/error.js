@@ -14,6 +14,9 @@ E('LOCAL_MODULE_NOT_FOUND', m('locally'))
 
 E('GLOBAL_MODULE_NOT_FOUND', m('globally', '-g '))
 
+E('INCOMPATIBLE_CAVIAR_VERSION',
+  'client caviar version is not compatible with the current @caviar/cli, caviar >= 5.0.0 is required')
+
 E('DEFAULT_CONFIG_NOT_FOUND',
   `default caviar.config not found, or you should:
   - specify --caviar.config or put a caviar.config.js in "%s"
