@@ -1,4 +1,5 @@
 const {Command} = require('bin-tool')
+const log = require('util').debuglog('caviar-cli')
 
 const {
   createOptions,
@@ -36,23 +37,17 @@ class CaviarCommand extends Command {
       }
     } = new WorkingMode(cwd).caviar
 
-    // caviarOptions
-    // - preset
-    // - configFile
-    // - cwd
-    // - dev
-    // - sandbox
-
-    // cliOptions
-    // - phase
-
-    const ret = await caviar({
+    const options = {
       preset,
       configFile,
       cwd,
       dev,
       sandbox
-    }).run(phase)
+    }
+
+    log('caviar options: %j, phase: %s', options, phase)
+
+    const ret = await caviar(options).run(phase)
 
     if (sandbox) {
       const subprocess = ret

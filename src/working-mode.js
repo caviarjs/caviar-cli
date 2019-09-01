@@ -15,6 +15,7 @@ class WorkingMode {
   constructor (cwd) {
     this._cwd = cwd
     this._isLocal = isPathInside(__dirname, join(cwd, 'node_modules'))
+    this._checkConflict()
 
     this._caviar = require(this.resolve('caviar'))
 
@@ -25,8 +26,26 @@ class WorkingMode {
     }
   }
 
+  get local () {
+    return this._isLocal
+  }
+
   get caviar () {
     return this._caviar
+  }
+
+  _checkConflict () {
+    if (this._isLocal) {
+      return
+    }
+
+    try {
+      resolveFrom('caviar', this._cwd)
+    } catch (err) {
+      return
+    }
+
+    throw error('GLOBAL_CAVIAR_CONFLICT', this._cwd)
   }
 
   resolve (id, from) {

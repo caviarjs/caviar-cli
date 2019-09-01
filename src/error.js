@@ -14,6 +14,9 @@ E('LOCAL_MODULE_NOT_FOUND', m('locally'))
 
 E('GLOBAL_MODULE_NOT_FOUND', m('globally', '-g '))
 
+E('GLOBAL_CAVIAR_CONFLICT',
+  '"caviar" should not be installed locally in "%s" if you are using a globally installed @caviar/cli')
+
 E('INCOMPATIBLE_CAVIAR_VERSION',
   'client caviar version is not compatible with the current @caviar/cli, caviar >= 5.0.0 is required')
 
