@@ -6,7 +6,7 @@ const {
 } = require('./options')
 const {WorkingMode} = require('./working-mode')
 
-module.exports = class CaviarCommand extends Command {
+class CaviarCommand extends Command {
   constructor ({
     defaultCaviarConfig
   } = {}) {
@@ -75,4 +75,9 @@ module.exports = class CaviarCommand extends Command {
 
     console.log(`client version: ${version}`)
   }
+}
+
+module.exports = {
+  Command: CaviarCommand,
+  WorkingMode
 }

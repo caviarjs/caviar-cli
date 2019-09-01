@@ -19,7 +19,8 @@ E('INCOMPATIBLE_CAVIAR_VERSION',
 
 E('DEFAULT_CONFIG_NOT_FOUND',
   `default caviar.config not found, or you should:
-  - specify --caviar.config or put a caviar.config.js in "%s"
+  - specify --caviar.config
+  - or put a "caviar.config.js" in "%s"
   - or specify at least one of --preset and --configFile`)
 
 E('ERR_LOAD_CAVIAR_CONFIG',

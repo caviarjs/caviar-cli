@@ -44,6 +44,20 @@ For details,
 > caviar --help
 ```
 
+## Create your own caviar cli with default profile settings
+
+bin.js
+
+```js
+#!/usr/bin/env node
+
+const {Command} = require('@caviar/cli')
+
+new Command({
+  defaultCaviarConfig: '/path/to/default/caviar.config.js'
+}).start()
+```
+
 ## License
 
 [MIT](LICENSE)
