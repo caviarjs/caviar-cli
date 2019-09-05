@@ -1,4 +1,5 @@
 const {resolve, join} = require('path')
+const {set} = require('bin-tool')
 
 const {error} = require('./error')
 
@@ -32,12 +33,18 @@ const MAIN_OPTIONS = {
 
 const MAIN_PROPERTIES = Object.keys(MAIN_OPTIONS)
 
-const assign = (target, source) => {
+const assign = async (target, source) => {
+  const tasks = []
+
   for (const key of MAIN_PROPERTIES) {
     if (key in source) {
-      target[key] = source[key]
+      tasks.push(
+        set(target, key, source[key])
+      )
     }
   }
+
+  return Promise.all(tasks)
 }
 
 const isMainDefined = parent => parent.preset || parent.configFile
@@ -104,7 +111,7 @@ const createOptions = ({
         // do nothing
       }
     },
-    set (path) {
+    async set (path) {
       // If no caviar.config found, then skip
       if (!path) {
         if (!isMainDefined(this.parent)) {
@@ -139,12 +146,12 @@ const createOptions = ({
         }
       }
 
-      assign(this.parent, caviarConfig)
+      await assign(this.parent, caviarConfig)
 
       const phaseConfig = caviarConfig.phases && caviarConfig.phases[phase]
 
       if (phaseConfig) {
-        assign(this.parent, phaseConfig)
+        await assign(this.parent, phaseConfig)
       }
     }
   }
