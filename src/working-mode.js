@@ -48,9 +48,13 @@ class WorkingMode {
     throw error('GLOBAL_CAVIAR_CONFLICT', this._cwd)
   }
 
-  resolve (id, from) {
+  resolve (id) {
+    const from = this._isLocal
+      ? this._cwd
+      : __dirname
+
     try {
-      return resolveFrom(id, from || __dirname)
+      return resolveFrom(from, id)
     } catch (err) {
       if (err.code === 'MODULE_NOT_FOUND') {
         const e = this._isLocal
