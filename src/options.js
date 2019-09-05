@@ -63,7 +63,7 @@ const DEFAULT_OPTIONS = {
 
   profile: {
     optional: true,
-    description: 'specify which config profile to use, defining this property requires the "multi" field in caviar.config',
+    description: 'specify which config profile to use, defining this property requires the "profiles" field in caviar.config',
     type: 'string',
     default () {
       return this.rawParent._[0] || ''
@@ -71,6 +71,19 @@ const DEFAULT_OPTIONS = {
   },
 }
 
+// Logic:
+// - has profile:
+// Object.assign(
+//   {},
+//   config.profiles[profile]
+//   config.profiles[profile].phases[phase]
+// )
+// - no profile:
+// Object.assign(
+//   {},
+//   config
+//   config.phases[phase]
+// )
 const createOptions = ({
   defaultCaviarConfig
 } = {}) => ({
@@ -115,11 +128,11 @@ const createOptions = ({
       } = this.parent
 
       if (profile) {
-        if (!caviarConfig.multi) {
-          throw error('NO_MULTI', path)
+        if (!caviarConfig.profiles) {
+          throw error('NO_PROFILES', path)
         }
 
-        caviarConfig = caviarConfig.multi[profile]
+        caviarConfig = caviarConfig.profiles[profile]
 
         if (!caviarConfig) {
           throw error('PROFILE_NOT_FOUND', profile, path)

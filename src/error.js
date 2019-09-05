@@ -29,9 +29,9 @@ E('DEFAULT_CONFIG_NOT_FOUND',
 E('ERR_LOAD_CAVIAR_CONFIG',
   'fails to load caviar.config "%s", reason:\n%s')
 
-E('NO_MULTI', 'if --profile is specified, then a "multi" field should be provided in caviar.config "%s"')
+E('NO_PROFILES', 'if --profile is specified, then a "profiles" field should be provided in caviar.config "%s"')
 
-E('PROFILE_NOT_FOUND', 'profile "%s" is not found in the "multi" field of caviar.config "%s"')
+E('PROFILE_NOT_FOUND', 'profile "%s" is not found in the "profiles" field of caviar.config "%s"')
 
 module.exports = {
   error
