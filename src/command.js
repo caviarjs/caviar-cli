@@ -32,9 +32,7 @@ class CaviarCommand extends Command {
   }) {
     const {
       caviar,
-      utils: {
-        monitor
-      }
+      monitor
     } = new WorkingMode(cwd).caviar
 
     const options = {
