@@ -1,17 +1,25 @@
 const {Command} = require('bin-tool')
-const log = require('util').debuglog('caviar-cli')
+// const log = require('util').debuglog('caviar-cli')
+const chalk = require('chalk')
+const {inspect} = require('util')
 
 const {
   createOptions,
-  optionGroups
+  optionGroups,
+  PRINT_OPTIONS,
+  MAIN_PROPERTIES
 } = require('./options')
 const {WorkingMode} = require('./working-mode')
+
+const format = s => inspect(s, {
+  colors: true
+})
 
 class CaviarCommand extends Command {
   constructor ({
     defaultCaviarConfig
-  } = {}) {
-    super()
+  } = {}, argv) {
+    super(argv)
 
     this.options = createOptions({
       defaultCaviarConfig
@@ -21,15 +29,17 @@ class CaviarCommand extends Command {
   }
 
   async run ({
-    argv: {
+    argv
+  }) {
+    const {
       preset,
       configFile,
       cwd,
       dev,
       sandbox,
       phase
-    }
-  }) {
+    } = argv
+
     const {
       caviar,
       monitor
@@ -43,7 +53,7 @@ class CaviarCommand extends Command {
       sandbox
     }
 
-    log('caviar options: %j, phase: %s', options, phase)
+    this._printOptions(argv)
 
     const ret = await caviar(options).run(phase)
 
@@ -57,6 +67,18 @@ class CaviarCommand extends Command {
 
       await subprocess.ready()
     }
+  }
+
+  _printOptions (argv) {
+    if (!argv[PRINT_OPTIONS]) {
+      return
+    }
+
+    console.log(chalk.bold('caviar options'))
+
+    MAIN_PROPERTIES.concat('cwd').forEach(key => {
+      console.log(`  - ${key}: ${format(argv[key])}`)
+    })
   }
 
   showVersion () {

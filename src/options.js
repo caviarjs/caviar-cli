@@ -4,6 +4,7 @@ const {resolve, join} = require('path')
 const {error} = require('./error')
 
 const CAVIAR_CONFIG = 'caviar.config'
+const PRINT_OPTIONS = 'print-options'
 
 const DEFAULT_OPTIONS = {
   cwd: {
@@ -20,6 +21,12 @@ const DEFAULT_OPTIONS = {
     default: '',
     description: 'specify which config profile to use, defining this property requires the "profiles" field in caviar.config',
     type: 'string'
+  },
+
+  [PRINT_OPTIONS]: {
+    default: true,
+    description: 'whether print the options, defaults to true',
+    type: 'boolean'
   }
 }
 
@@ -173,5 +180,7 @@ const optionGroups = [
 
 module.exports = {
   createOptions,
-  optionGroups
+  optionGroups,
+  PRINT_OPTIONS,
+  MAIN_PROPERTIES
 }
