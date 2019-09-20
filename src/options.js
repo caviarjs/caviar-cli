@@ -149,13 +149,15 @@ const createOptions = ({
 
       const phaseConfig = caviarConfig.phases && caviarConfig.phases[phase]
 
+      if (!phaseConfig) {
+        return
+      }
+
       if ('phase' in phaseConfig) {
         throw new Error('PHASE_CONFLICT', phaseConfig[phase], path)
       }
 
-      if (phaseConfig) {
-        assign(this.rawParent, phaseConfig)
-      }
+      assign(this.rawParent, phaseConfig)
     }
   },
   ...MAIN_OPTIONS
@@ -181,6 +183,5 @@ const optionGroups = [
 module.exports = {
   createOptions,
   optionGroups,
-  PRINT_OPTIONS,
-  MAIN_PROPERTIES
+  PRINT_OPTIONS
 }

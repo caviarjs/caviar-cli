@@ -3,11 +3,32 @@ const {resolve} = require('test-fixture')()
 
 const cli = resolve('..', 'cli.js')
 
-module.exports = async args => {
+const run = async args => {
   const {stdout} = await execa('node', [
     cli,
     ...args
   ])
 
-  return JSON.parse(stdout)
+  const {
+    preset,
+    configFile,
+    cwd,
+    dev,
+    sandbox,
+    phase
+  } = JSON.parse(stdout)
+
+  return {
+    preset,
+    configFile,
+    cwd,
+    dev,
+    sandbox,
+    phase
+  }
+}
+
+module.exports = {
+  run,
+  resolve
 }

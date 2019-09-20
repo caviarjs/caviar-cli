@@ -6,8 +6,7 @@ const {inspect} = require('util')
 const {
   createOptions,
   optionGroups,
-  PRINT_OPTIONS,
-  MAIN_PROPERTIES
+  PRINT_OPTIONS
 } = require('./options')
 const {WorkingMode} = require('./working-mode')
 
@@ -53,7 +52,7 @@ class CaviarCommand extends Command {
       sandbox
     }
 
-    this._printOptions(argv)
+    this._printOptions(options, argv)
 
     const ret = await caviar(options).run(phase)
 
@@ -69,16 +68,16 @@ class CaviarCommand extends Command {
     }
   }
 
-  _printOptions (argv) {
+  _printOptions (options, argv) {
     if (!argv[PRINT_OPTIONS]) {
       return
     }
 
     console.log(chalk.bold('caviar options'))
 
-    MAIN_PROPERTIES.concat('cwd').forEach(key => {
-      console.log(`  - ${key}: ${format(argv[key])}`)
-    })
+    for (const [key, value] of Object.entries(options)) {
+      console.log(`  - ${key}: ${format(value)}`)
+    }
   }
 
   showVersion () {

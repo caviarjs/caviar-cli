@@ -43,7 +43,7 @@
   "devDependencies": {
     "@ostai/eslint-config": "^3.5.0",
     "ava": "^2.4.0",
-    "codecov": "^3.6.0",
+    "codecov": "^3.6.1",
     "eslint": "^6.4.0",
     "eslint-plugin-import": "^2.18.2",
     "execa": "^2.0.4",
@@ -51,7 +51,7 @@
     "test-fixture": "^2.4.1"
   },
   "dependencies": {
-    "bin-tool": "^2.2.1",
+    "bin-tool": "^2.2.2",
     "chalk": "^2.4.2",
     "err-object": "^5.1.4",
     "is-path-inside": "^3.0.1",
