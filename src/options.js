@@ -1,9 +1,27 @@
 const {resolve, join} = require('path')
-const {set} = require('bin-tool')
+// const {set} = require('bin-tool')
 
 const {error} = require('./error')
 
 const CAVIAR_CONFIG = 'caviar.config'
+
+const DEFAULT_OPTIONS = {
+  cwd: {
+    default () {
+      return process.cwd()
+    },
+    description: 'set the current working directory, defaults to `process.cwd()`',
+    set (cwd) {
+      return resolve(cwd)
+    }
+  },
+
+  profile: {
+    default: '',
+    description: 'specify which config profile to use, defining this property requires the "profiles" field in caviar.config',
+    type: 'string'
+  }
+}
 
 const MAIN_OPTIONS = {
   preset: {
@@ -28,55 +46,26 @@ const MAIN_OPTIONS = {
     default: false,
     description: 'whether to run in dev mode or not',
     type: 'boolean'
-  }
-}
-
-const MAIN_PROPERTIES = Object.keys(MAIN_OPTIONS)
-
-const assign = async (target, source) => {
-  const tasks = []
-
-  for (const key of MAIN_PROPERTIES) {
-    if (key in source) {
-      tasks.push(
-        set(target, key, source[key])
-      )
-    }
-  }
-
-  return Promise.all(tasks)
-}
-
-const isMainDefined = parent => parent.preset || parent.configFile
-
-const DEFAULT_OPTIONS = {
-  cwd: {
-    default () {
-      return process.cwd()
-    },
-    description: 'set the current working directory, defaults to `process.cwd()`',
-    set (cwd) {
-      return resolve(cwd)
-    }
   },
 
   phase: {
     default: 'default',
     description: 'the caviar phase to run, defaults to "default"',
     type: 'string'
-  },
-
-  ...MAIN_OPTIONS,
-
-  profile: {
-    optional: true,
-    description: 'specify which config profile to use, defining this property requires the "profiles" field in caviar.config',
-    type: 'string',
-    default () {
-      return this.rawParent._[0] || ''
-    }
-  },
+  }
 }
+
+const MAIN_PROPERTIES = Object.keys(MAIN_OPTIONS)
+
+const assign = async (target, source) => {
+  for (const key of MAIN_PROPERTIES) {
+    if (key in source) {
+      target[key] = source[key]
+    }
+  }
+}
+
+const isMainDefined = parent => parent.preset || parent.configFile
 
 // Logic:
 // - has profile:
@@ -114,7 +103,7 @@ const createOptions = ({
     async set (path) {
       // If no caviar.config found, then skip
       if (!path) {
-        if (!isMainDefined(this.parent)) {
+        if (this.parent.profile || !isMainDefined(this.rawParent)) {
           throw error('DEFAULT_CONFIG_NOT_FOUND', this.parent.cwd)
         }
 
@@ -130,9 +119,12 @@ const createOptions = ({
       }
 
       const {
-        profile,
-        phase
+        profile
       } = this.parent
+
+      const {
+        phase
+      } = this.rawParent
 
       if (profile) {
         if (!caviarConfig.profiles) {
@@ -146,15 +138,20 @@ const createOptions = ({
         }
       }
 
-      await assign(this.parent, caviarConfig)
+      assign(this.rawParent, caviarConfig)
 
       const phaseConfig = caviarConfig.phases && caviarConfig.phases[phase]
 
+      if ('phase' in phaseConfig) {
+        throw new Error('PHASE_CONFLICT', phaseConfig[phase], path)
+      }
+
       if (phaseConfig) {
-        await assign(this.parent, phaseConfig)
+        assign(this.rawParent, phaseConfig)
       }
     }
-  }
+  },
+  ...MAIN_OPTIONS
 })
 
 // const usage = `caviar [options]`
