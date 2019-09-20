@@ -1,7 +1,7 @@
 const test = require('ava')
-const log = require('util').debuglog('@caviar/cli')
-const cli = require('../src')
+const run = require('./run')
 
-test('description', t => {
-  t.is(true, true)
+test('basic', async t => {
+  const argv = await run(['--preset', 'foo'])
+  t.is(argv.preset, 'foo')
 })
