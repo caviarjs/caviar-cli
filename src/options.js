@@ -154,7 +154,7 @@ const createOptions = ({
       }
 
       if ('phase' in phaseConfig) {
-        throw new Error('PHASE_CONFLICT', phaseConfig[phase], path)
+        throw error('PHASE_CONFLICT', phaseConfig.phase, phase, path)
       }
 
       assign(this.rawParent, phaseConfig)

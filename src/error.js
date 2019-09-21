@@ -34,7 +34,7 @@ E('NO_PROFILES', 'if --profile is specified, then a "profiles" field should be p
 
 E('PROFILE_NOT_FOUND', 'profile "%s" is not found in the "profiles" field of caviar.config "%s"')
 
-E('PHASE_CONFLICT', 'phase "%s" is not allowed in field phases of "%s"')
+E('PHASE_CONFLICT', 'phase "%s" is not allowed in field "phases.%s" of "%s"')
 
 module.exports = {
   error

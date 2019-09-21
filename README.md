@@ -55,6 +55,8 @@ module.exports = {
 }
 ```
 
+argv options > phase options (caviar.config) > profile options (caviar.config)
+
 ```sh
 > caviar
 ```

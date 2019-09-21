@@ -4,10 +4,16 @@ const {resolve} = require('test-fixture')()
 const cli = resolve('..', 'cli.js')
 
 const run = async args => {
-  const {stdout} = await execa('node', [
-    cli,
-    ...args
-  ])
+  let stdout
+
+  try {
+    ({stdout} = await execa('node', [
+      cli,
+      ...args
+    ]))
+  } catch (err) {
+    throw new Error(err.stderr)
+  }
 
   const {
     preset,
