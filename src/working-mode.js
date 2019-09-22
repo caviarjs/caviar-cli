@@ -11,13 +11,19 @@ const {error} = require('./error')
 
 const MIN_CAVIAR_VERSION = '5.0.0'
 
+let moduleName = 'caviar'
+
 class WorkingMode {
+  static set moduleName (name) {
+    moduleName = name
+  }
+
   constructor (cwd) {
     this._cwd = cwd
     this._isLocal = isPathInside(__dirname, join(cwd, 'node_modules'))
     this._checkConflict()
 
-    this._caviar = require(this.resolve('caviar'))
+    this._caviar = require(this.resolve(moduleName))
 
     const {version} = this._caviar
 
